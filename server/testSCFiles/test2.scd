@@ -3,7 +3,7 @@ s.boot;
 s.waitForBoot{
 
     // Start recording to a file
-    s.record(path: "sine.wav");
+    s.record(path: "~/sine.wav");
 
     // Define and play a sine wave
     { SinOsc.ar(440, 0, 0.2) }.play;
