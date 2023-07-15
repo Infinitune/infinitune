@@ -1,17 +1,30 @@
+
+
+SynthDef(\pluck, {
+        var snd, freq;
+        freq = 60 * \transpose.kr(0).midiratio;
+        snd = Pulse.ar(freq * [-0.1, 0.1].midiratio);
+        snd = MoogFF.ar(snd, Env.perc(0.001, 0.2).ar.linexp(0, 1, 100, 8000), 1);
+        snd = snd * (1 + (SinOsc.ar(963) * Env.perc(0, 0.1).ar));
+        snd = snd * Env.perc(0.001, 0.2, curve: -1).ar;
+        snd = snd + (GVerb.ar(snd.sum, 20, 1) * -10.dbamp);
+        snd = snd * Env.perc(0.001, 0.5, curve: -1).ar(Done.freeSelf);
+        snd = snd * \amp.kr(1);
+        snd = snd * 3.dbamp;
+        Out.ar(\out.kr(0), snd);
+}).add;
+
+
 (
 s.waitForBoot {
     // Define a simple sine wave SynthDef
-    SynthDef(\snare, { |out=0, freq=233, amp=0.5|
-        var env = EnvGen.ar(Env.perc(0.01, 0.4), doneAction:2);
-        var sig = WhiteNoise.ar() * env;
-        Out.ar(out, sig * amp);
-    }).add;
+
 
     // Start recording to a file
     s.record(path: "~/sine.wav");
 
     // Play the simple sine wave
-	Synth(\snare);
+	Synth(\pluck);
 
     // Wait for 3 seconds
     3.wait;
