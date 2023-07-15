@@ -1,7 +1,8 @@
 (
+	Server.default.options.device = "PortAudio";
 Routine.run {
     var s = Server.default;
-	Server.default.options.device = "PortAudio";
+
 
     // Define your synths
     SynthDef(\kick, { |out=0, freq=50, amp=0.5|
