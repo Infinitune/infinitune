@@ -101,6 +101,8 @@ Routine.run {
         )
     ]).play;
 
+    { LFNoise1.kr.poll; }.play;
+
     // Wait for the performance to finish
     9.6.wait;
 
