@@ -137,7 +137,7 @@ const dir = '../generated_code/';
         s.record(path: "~/infinitune/server/generated_sounds/" ++ timestamp ++ ".wav");
     
         // Play the simple sine wave
-        Synth(\gen);
+        Synth(\\gen);
     
         // Wait for 3 seconds
         3.wait;
