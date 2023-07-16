@@ -122,6 +122,11 @@ $rowGap: 8px;
     column-gap: 16px;
     grid-column: 2;
 }
+.sampleName {
+    &:hover {
+        background-color: #4281b2;
+    }
+}
 
 .button {
     border: none;
