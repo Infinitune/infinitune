@@ -25,7 +25,19 @@ async function sendToGpt(text) {
 
   const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
-  messages: [{"role": "system", "content": "You can write SuperCollider SynthDef code based on input conditions provided by the user, as detailed as possible. You do not output anything except a SynthDef. Do not include any explanations."}, 
+  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user, as detailed as possible. You do not output anything except a SynthDef. Do not include any explanations. Always name the synth "gen". For example: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" should output: "SynthDef(\gen, {
+    var snd, freq;
+    freq = 60 * \transpose.kr(0).midiratio;
+    snd = Pulse.ar(freq * [-0.1, 0.1].midiratio);
+    snd = MoogFF.ar(snd, Env.perc(0.001, 0.2).ar.linexp(0, 1, 100, 8000), 1);
+    snd = snd * (1 + (SinOsc.ar(963) * Env.perc(0, 0.1).ar));
+    snd = snd * Env.perc(0.001, 0.2, curve: -1).ar;
+    snd = snd + (GVerb.ar(snd.sum, 20, 1) * -10.dbamp);
+    snd = snd * Env.perc(0.001, 0.5, curve: -1).ar(Done.freeSelf);
+    snd = snd * \amp.kr(1);
+    snd = snd * 3.dbamp;
+    Out.ar(\out.kr(0), snd);
+}).add;"`}, 
   {"role": "user", "content": "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit"},
 {"role": "assistant", "content": `SynthDef(\gen, {
     var snd, freq;
