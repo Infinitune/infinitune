@@ -111,7 +111,8 @@ async function sendToGpt(text) {
     Out.ar(\out.kr(0), snd);
 }).add;`},
 {"role":"user", "content":text}
-]
+],
+temperature: 0
 });
 
 //console.log(gptOutputArray.data.choices[0].message.content);
