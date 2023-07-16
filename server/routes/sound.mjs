@@ -141,7 +141,7 @@ const dir = '../generated_code/';
         // Get a timestamp
     
         // Start recording to a file
-        s.record(path: "~/infinitune/server/generated_sounds/" ++ ${timestamp} ++ ".wav");
+        s.record(path: "~/infinitune/server/generated_sounds/" ++ "${timestamp}" ++ ".wav");
     
         // Play the simple sine wave
         Synth(\\gen);
