@@ -25,7 +25,7 @@ async function sendToGpt(text) {
 
   const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
-  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user. You output syntax exactly as expected for SuperCollider, including all backslashes '\' in front of the Synth name and Out. You do not output anything except a SynthDef. Do not include any explanations. For example: {user}: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" {assistant}: "SynthDef(\gen, {
+  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user. You do not output anything except a SynthDef. Do not include any explanations. For example: {user}: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" {assistant}: "SynthDef(\gen, {
     var snd, freq;
     freq = 60 * \transpose.kr(0).midiratio;
     snd = Pulse.ar(freq * [-0.1, 0.1].midiratio);
@@ -96,24 +96,6 @@ async function sendToGpt(text) {
     snd = snd * [-10, -5, 0].dbamp;
     snd = snd.sum;
     snd = snd * Env.perc(0.003, 0.05, curve: -8).ar(Done.freeSelf);
-    snd = Pan2.ar(snd, \pan.kr(0));
-    Out.ar(\out.kr(0), snd);
-}).add;`},
-{"role": "user", "content": "drum, snare, dubstep, loud, hard, tonal"},
-{"role": "assistant", "content": `SynthDef(\gen, {
-    var snd;
-    snd = SinOsc.ar(
-            319
-            * (1 + (0.5 * Env.perc(0.0, 0.1, curve: -9).ar))
-            * (1 + (0.3 * Env.perc(0.0, 0.03, curve: -4).ar))
-            * [0.56, 1, 2.3, 3.4]
-    );
-    snd = snd * (Env.perc(0, [0.3, 3.0, 0.2, 0.1]).ar);
-    snd = (snd * [-5, 0, -5, -3].dbamp).sum;
-    snd = snd + (BPF.ar(Hasher.ar(Sweep.ar), [2420, 5420, 8329], 0.5) * Env.perc(0.05, 0.2).ar * [5, 0, -8].dbamp).sum;
-    snd = (snd * 8.dbamp).tanh;
-    snd = snd * Env.perc(0.0005, 0.12, curve: -1).ar(Done.freeSelf);
-    snd = snd * -3.dbamp;
     snd = Pan2.ar(snd, \pan.kr(0));
     Out.ar(\out.kr(0), snd);
 }).add;`},
