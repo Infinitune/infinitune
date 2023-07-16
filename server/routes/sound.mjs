@@ -22,8 +22,8 @@ const openai = new OpenAIApi(configuration);
 function correctSyntax(gptOutput) {
     let corrected = gptOutput;
   
-    corrected = corrected.replace(/\\gen/g, '\\\\gen');
-    corrected = corrected.replace(/\\out.kr/g, '\\\\out.kr');
+    corrected = corrected.replace(/\\gen/g, '\gen');
+    corrected = corrected.replace(/\\out.kr/g, '\out.kr');
     
     return corrected;
   }
