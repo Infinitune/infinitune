@@ -110,6 +110,8 @@ async function sendToGpt(text) {
 ]
 });
 
+console.log(gptOutputArray);
+
 const gptOutput = gptOutputArray.data.choices[0].text.trim();
 console.log(completion.data.choices[0].message);
 
