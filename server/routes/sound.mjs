@@ -19,6 +19,14 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+function correctSyntax(gptOutput) {
+    let corrected = gptOutput;
+  
+    corrected = corrected.replace(/\\gen/g, '\\\\gen');
+    corrected = corrected.replace(/\\out.kr/g, '\\\\out.kr');
+    
+    return corrected;
+  }
 
 async function sendToGpt(text) {
   // Call the OpenAI API here with the text and get the output
@@ -108,7 +116,8 @@ async function sendToGpt(text) {
 
 //console.log(gptOutputArray.data.choices[0].message.content);
 
-const gptOutput = gptOutputArray.data.choices[0].message.content;
+const gptOutput = correctSyntax(gptOutputArray.data.choices[0].message.content);
+
 console.log(gptOutput);
 const dir = '../generated_code/';
 
@@ -154,6 +163,8 @@ await fs.writeFile(scdFilePath, scdContent);
 
 return scdFilePath;
 }
+
+
 
 async function generateSound(scdFilePath) {
     return new Promise((resolve, reject) => {
