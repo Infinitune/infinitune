@@ -37,31 +37,64 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
     const handleVolumeChange = (e) => {
         Tone.Destination.volume.value = Tone.gainToDb(Number(e.target.value));
     };
-    const handleGenerateClick = async (e, index) => {
+
+    // API CALL
+    const handleGenerateClick = (e, index) => {
         e.preventDefault();
         const text = textareaRefs.current[index].value;
         console.log(index, text);
 
         // Define the request parameters
-        const url = "https://2a83-68-7-31-205.ngrok-free.app/sound";
+        const baseUrl = "https://2a83-68-7-31-205.ngrok-free.app/";
         const data = { text }; // Creates an object { text: "blah" } if textarea contains "blah"
 
-        try {
-            // Send the request
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data), // Converts { text: "blah" } to '{"text":"blah"}'
-            });
+        // Send the request
+        /*fetch(baseUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data), // Converts { text: "blah" } to '{"text":"blah"}'
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                const fileId = data.fileId; // replace 'fileId' with the actual property name
+                const soundUrl = `${baseUrl}sounds/${fileId}`;
 
-            // Log the response for debugging purposes
-            const responseData = await response.json();
-            console.log(responseData);
-        } catch (error) {
-            console.error("Error:", error);
-        }
+                // Fetch the .wav file
+                return fetch(soundUrl);
+            })
+            .then((response) => response.blob())
+            .then((blob) => {
+                // Create a Blob URL and log it
+                const blobUrl = URL.createObjectURL(blob);
+                console.log(blobUrl);
+
+                // You can now use 'blobUrl' as the source for an HTML5 audio element,
+                // or to create a download link for the .wav file.
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            }); */
+
+        // Define the request parameters
+        const fileId = "sine_20230716114832"; // replace with the actual fileId
+        const soundUrl = `${baseUrl}sounds/${fileId}.wav`;
+
+        // Fetch the .wav file
+        fetch(soundUrl)
+            .then((response) => response.blob())
+            .then((blob) => {
+                // Create a Blob URL and log it
+                const blobUrl = URL.createObjectURL(blob);
+                console.log(blobUrl);
+
+                // You can now use 'blobUrl' as the source for an HTML5 audio element,
+                // or to create a download link for the .wav file.
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     React.useEffect(() => {
