@@ -15,6 +15,7 @@
     <br />
     <a href="https://infinitune.org">View Live Site</a>
     ·
+    <a href="https://app.decktopus.com/share/UpbbwnDaE">View Presentation</a>
     ·
     <a href="https://github.com/presolve-xyz/presolve/issues">Report Bug</a>
     ·
