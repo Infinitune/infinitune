@@ -155,7 +155,7 @@ const dir = '../generated_code/';
         s.quit;
     };
 )`;
-console.log(scdContent)
+//console.log(scdContent)
 
 try {
   await fs.access(dir);
@@ -173,6 +173,7 @@ return scdFilePath;
 async function generateSound(scdFilePath) {
     return new Promise((resolve, reject) => {
         const sclang = spawn('sclang', [scdFilePath]);
+        console.log(sclang)
 
 
         sclang.stdout.on('data', (data) => {
