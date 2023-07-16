@@ -108,6 +108,7 @@ async function sendToGpt(text) {
 
 const gptOutput = gptOutputArray.data.choices[0].message.content;
 console.log(gptOutput);
+const dir = path.resolve(__dirname, '../generated_code');
 
   // Create a .scd file with the output from the GPT model
   const scdFilePath = path.join(dir, 'gen.scd');
@@ -141,7 +142,6 @@ console.log(gptOutput);
 )`;
 console.log(scdContent)
 
-const dir = path.resolve(__dirname, '../generated_code');
 try {
   await fs.access(dir);
 } catch {
