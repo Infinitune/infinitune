@@ -216,7 +216,9 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
                     {isPlaying ? " | | " : "▶"}
                 </button>
                 <label className={styles.fader}>
-                    <span>BPM</span>
+                    <span style={{ fontWeight: "bold", color: "white" }}>
+                        BPM
+                    </span>
                     <input
                         type="range"
                         min={30}
@@ -227,7 +229,9 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
                     />
                 </label>
                 <label className={styles.fader}>
-                    <span>Volume</span>
+                    <span style={{ fontWeight: "bold", color: "white" }}>
+                        Volume
+                    </span>
                     <input
                         type="range"
                         min={0}
