@@ -3,7 +3,7 @@ import { exec } from "child_process";
 import { promises as fs } from "fs";
 
 const router = express.Router();
-const { Configuration, OpenAIApi } = require("openai");
+import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -12,13 +12,12 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-
 async function sendToGpt(text) {
   // Call the OpenAI API here with the text and get the output
   // This part will depend on how you're interfacing with the OpenAI API
   // For now, let's say that the output is stored in a variable called `gptOutput`
 
-  const gptOutput = await openai.createChatCompletion({
+  const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
   messages: [{"role": "system", "content": "You can write SuperCollider SynthDef code based on input conditions provided by the user, as detailed as possible. You do not output anything except a SynthDef. Do not include any explanations."}, 
   {role: "user", content: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit"},
@@ -104,9 +103,7 @@ async function sendToGpt(text) {
 ]
 });
 
-//This isn't WORKING RN Because the outputted gptOutput is not a string, but an object.
-
-
+const gptOutput = completion.data.choices[0].text.trim();
 console.log(completion.data.choices[0].message);
 
   // Create a .scd file with the output from the GPT model
@@ -139,6 +136,7 @@ console.log(completion.data.choices[0].message);
         s.quit;
     };
 )  `;
+
   await fs.writeFile(scdFilePath, scdContent);
 
   return scdFilePath;
@@ -174,7 +172,7 @@ router.post("/", async (req, res) => {
   let scCode = await sendToGpt(textPrompt);
   let wavFile = await generateSound(scCode);
   let fileId = await storeWavFile(wavFile);
-  res.send({fileId: fileId}).status(200);
+  res.send({fileId: fileId}).status(201);
 });
 
 router.get("/:id", async (req, res) => {
