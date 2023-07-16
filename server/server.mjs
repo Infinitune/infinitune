@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 
 const corsOptions = {
-  origin: 'https://infinitune.org/',
+  origin: 'https://www.infinitune.org/',
   optionsSuccessStatus: 200
 };
 
