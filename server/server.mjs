@@ -7,7 +7,6 @@ import sounds from "./routes/sound.mjs";
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env.local'});
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -17,8 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const key = process.env.OPENAI_API_KEY;
-console.log(key);
 
 // Serve static files from the "generated_sounds" directory
 app.use('/sounds', express.static(join(__dirname, 'generated_sounds')));
