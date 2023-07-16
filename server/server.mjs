@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import records from "./routes/record.mjs";
-import sounds from "./routes/sound.mjs";  // Import the new routes
+import path from "path";
+import sounds from "./routes/sounds.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -9,10 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/record", records);
-app.use("/sound", sounds);  // Use the new routes
+// Serve static files from the "generated_sounds" directory
+app.use('/sounds', express.static(path.join(__dirname, 'generated_sounds')));
 
-// start the Express server
+app.use("/sound", sounds);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
