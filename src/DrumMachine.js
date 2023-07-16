@@ -100,12 +100,11 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
                     <>
                         <button
                             id={`clickable${sample.index}`}
+                            className="sampleName"
                             key={index}
                             style={{
-                                backgroundColor: "#33ff66",
                                 border: "none",
                                 borderRadius: 7,
-                                color: "white",
                                 boxShadow:
                                     "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
                                 backdropFilter: "blur(6px)",
@@ -114,7 +113,15 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
                                 height: "40px !important",
                                 marginBottom: "2px",
                                 minWidth: "80px",
+
                                 fontWeight: " bold",
+                                cursor: "pointer",
+                                color: "white",
+                                backgroundColor: "rgba(51, 204, 255, 0.5)",
+                                width: "80px",
+                                lineHeight: "2",
+                                borderRadius: "4px",
+                                transition: "background-color 0.3s",
                             }}
                         >
                             {sample.name}
@@ -138,16 +145,13 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
 
                             <button
                                 style={{
-                                    background:
-                                        "linear-gradient(-90deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #EE7752)",
+                                    backgroundColor: "#33ff66",
                                     textTransform: "uppercase",
                                     fontWeight: "700",
                                     border: "none",
-                                    animation: "Gradient 4s ease infinite",
                                     textDecoration: "none",
 
                                     color: "black",
-                                    backgroundColor: "white",
                                     borderRadius: "5px",
                                     fontWeight: "bold",
                                 }}
