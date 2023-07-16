@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import sounds from "./routes/sounds.mjs";
+import sounds from "./routes/sound.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
