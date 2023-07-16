@@ -25,7 +25,7 @@ async function sendToGpt(text) {
 
   const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
-  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user, as detailed as possible. You do not output anything except a SynthDef. Do not include any explanations. Always name the synth "gen". For example: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" should output: "SynthDef(\gen, {
+  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user, as detailed as possible. You do not output anything except a SynthDef. Do not include any explanations. Always name the synth "\gen". For example: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" should output: "SynthDef(\gen, {
     var snd, freq;
     freq = 60 * \transpose.kr(0).midiratio;
     snd = Pulse.ar(freq * [-0.1, 0.1].midiratio);
@@ -118,7 +118,8 @@ async function sendToGpt(text) {
     Out.ar(\out.kr(0), snd);
 }).add;`},
 {"role":"user", "content":text}
-]
+],
+"temperature": 0
 });
 
 //console.log(gptOutputArray.data.choices[0].message.content);
