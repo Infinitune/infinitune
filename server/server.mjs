@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import "./loadEnvironment.mjs";
 import records from "./routes/record.mjs";
 import sounds from "./routes/sounds.mjs";  // Import the new routes
 
