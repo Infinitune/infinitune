@@ -104,7 +104,7 @@ async function sendToGpt(text) {
 ]
 });
 
-const gptOutput = completion.data.choices[0].text.trim();
+const gptOutput = gptOutputArray.data.choices[0].text.trim();
 console.log(completion.data.choices[0].message);
 
   // Create a .scd file with the output from the GPT model
