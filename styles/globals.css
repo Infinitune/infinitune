@@ -1,0 +1,22 @@
+:root {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+}
+
+*:focus,
+*:focus-visible,
+*:focus-within {
+    outline-color: #90cdf4;
+}
+
+body {
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+    background: rgb(164, 63, 251);
+    background: linear-gradient(
+        42deg,
+        rgba(164, 63, 251, 1) 0%,
+        rgba(252, 70, 107, 1) 100%
+    );
+}
