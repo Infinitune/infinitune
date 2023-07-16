@@ -169,35 +169,35 @@ return scdFilePath;
 }
 
 
-
 async function generateSound(scdFilePath) {
     return new Promise((resolve, reject) => {
-        const sclang = spawn('sclang', [scdFilePath]);
-        console.log(sclang)
-
-
-        sclang.stdout.on('data', (data) => {
-          const wavFilePath = data.toString().trim();
+      const sclang = spawn('sclang', [scdFilePath]);
+      let output = '';
+  
+      sclang.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+  
+      sclang.stderr.on('data', (data) => {
+        reject(`stderr: ${data}`);
+      });
+  
+      sclang.on('close', (code) => {
+        if (code !== 0) {
+          reject(`sclang process exited with code ${code}`);
+        } else {
+          const lines = output.split('\n');
+          const wavFilePath = lines[lines.length - 1].trim();  // The .wav file path is expected to be on the last line of the output
           const fileId = path.parse(wavFilePath).name;
-    
           resolve({ wavFilePath, fileId });
-        });
-    
-        sclang.stderr.on('data', (data) => {
-          reject(`stderr: ${data}`);
-        });
-    
-        sclang.on('close', (code) => {
-          if (code !== 0) {
-            reject(`sclang process exited with code ${code}`);
-      }
+        }
+      });
+  
+      sclang.on('error', (error) => {
+        reject(`Failed to start subprocess. ${error}`);
+      });
     });
-
-    sclang.on('error', (error) => {
-      reject(`Failed to start subprocess. ${error}`);
-    });
-  });
-}
+  }
 
 function getWavFile(fileId) {
     // Construct the URL of the .wav file
