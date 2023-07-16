@@ -162,8 +162,10 @@ async function generateSound(scdFilePath) {
       } else {
         // The .wav file path is printed to stdout by the Supercollider script
         const wavFilePath = stdout.trim();
+        const fileId = path.parse(wavFilePath).name;
 
         resolve(wavFilePath);
+        resolve(fileId);
       }
     });
   });
@@ -181,8 +183,8 @@ function getWavFile(fileId) {
 router.post("/", async (req, res) => {
   let textPrompt = req.body.text;
   let scCode = await sendToGpt(textPrompt);
-  let wavFile = await generateSound(scCode);
-  let fileId = await storeWavFile(wavFile);
+  let fileId = await generateSound(scCode);
+  console.log(fileId)
   res.send({fileId: fileId}).status(201);
 });
 
