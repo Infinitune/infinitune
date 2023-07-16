@@ -5,9 +5,12 @@ import { promises as fs } from "fs";
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
 
+const key = process.env.OPENAI_API_KEY;
+console.log(key);
+
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: key,
 });
 
 const openai = new OpenAIApi(configuration);

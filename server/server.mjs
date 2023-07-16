@@ -5,8 +5,7 @@ import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
 import sounds from "./routes/sound.mjs";
 import dotenv from 'dotenv';
-dotenv.config({ path: './.env.local' });
-
+dotenv.config({ path: './.env.local'});
 
 
 
