@@ -137,7 +137,8 @@ console.log(gptOutput);
         // Stop server
         s.quit;
     };
-)  `;
+)`;
+console.log(scdContent)
 
   await fs.writeFile(scdFilePath, scdContent);
 
