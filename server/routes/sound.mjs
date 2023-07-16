@@ -27,7 +27,8 @@ async function sendToGpt(text) {
 
   const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
-  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user. You do not output anything except a SynthDef. Do not include any explanations. For example: {user}: "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit" {assistant}: "SynthDef(\gen, {
+  messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user. You do not output anything except a SynthDef. Do not include any explanations. The code will be in the following format: 
+  SynthDef(\gen, {
     var snd, freq;
     freq = 60 * \transpose.kr(0).midiratio;
     snd = Pulse.ar(freq * [-0.1, 0.1].midiratio);
@@ -39,7 +40,7 @@ async function sendToGpt(text) {
     snd = snd * \amp.kr(1);
     snd = snd * 3.dbamp;
     Out.ar(\out.kr(0), snd);
-}).add;"`}, 
+}).add;`}, 
   {"role": "user", "content": "synth, bass, pluck, house, deep, techno, bass house, deep, cool, layered, layer, detuned, detune, hit"},
 {"role": "assistant", "content": `SynthDef(\gen, {
     var snd, freq;
@@ -158,7 +159,7 @@ async function generateSound(scdFilePath) {
     return new Promise((resolve, reject) => {
         const sclang = spawn('sclang', [scdFilePath]);
 
-        
+
         sclang.stdout.on('data', (data) => {
           const wavFilePath = data.toString().trim();
           const fileId = path.parse(wavFilePath).name;
