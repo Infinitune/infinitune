@@ -1,2 +1,6 @@
 #!/bin/bash
-gnome-terminal -- bash -c 'bash out.sh; sleep 40; exit' &
+gnome-terminal
+WID=$(xdotool getactivewindow)
+xdotool type --window $WID 'echo Hello, World!'
+xdotool key --window $WID Return
+
