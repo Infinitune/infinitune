@@ -30,10 +30,11 @@ async function sendToGpt(text) {
 ]
 });
 
-console.log(gptOutputArray);
+console.log(gptOutputArray.data.choices[0].text);
+console.log(gptOutputArray.data.choices[0].message);
 
-const gptOutput = gptOutputArray.data.choices[0].text.trim();
-console.log(completion.data.choices[0].message);
+const gptOutput = gptOutputArray.data.choices[0].text;
+//console.log(completion.data.choices[0].message);
 
   // Create a .scd file with the output from the GPT model
   const scdFilePath = '../generated_code/gen.scd';
