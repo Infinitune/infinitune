@@ -1,11 +1,17 @@
 import express from "express";
 import { promises as fs } from "fs";
 import { spawn } from 'child_process';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
 
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
 import path from 'path';
+const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+
+const execAsync = promisify(exec);
 
 dotenv.config({ path: '../.env.local'});
 
@@ -35,7 +41,6 @@ async function sendToGpt(text) {
   // Call the OpenAI API here with the text and get the output
   // This part will depend on how you're interfacing with the OpenAI API
   // For now, let's say that the output is stored in a variable called `gptOutput`
-
   const gptOutputArray = await openai.createChatCompletion({
   model: "gpt-4",
   messages: [{"role": "system", "content": `You can write SuperCollider SynthDef code based on input conditions provided by the user. You do not output anything except a SynthDef. Do not include any explanations. The code will be in the following format: 
@@ -134,10 +139,9 @@ const dir = '../generated_code/';
     s.waitForBoot {
     
         // Get a timestamp
-        var timestamp = Date.getDate.format("%Y%m%d%H%M%S");
     
         // Start recording to a file
-        s.record(path: "~/infinitune/server/generated_sounds/" ++ timestamp ++ ".wav");
+        s.record(path: "~/infinitune/server/generated_sounds/" ++ ${timestamp} ++ ".wav");
     
         // Play the simple sine wave
         Synth(\\gen);
@@ -170,34 +174,17 @@ return scdFilePath;
 
 
 async function generateSound(scdFilePath) {
-    return new Promise((resolve, reject) => {
-        const sclang = spawn('sclang', ['-D', scdFilePath]);
-      let output = '';
-  
-      sclang.stdout.on('data', (data) => {
-        output += data.toString();
-      });
-  
-      sclang.stderr.on('data', (data) => {
-        reject(`stderr: ${data}`);
-      });
-  
-      sclang.on('close', (code) => {
-        if (code !== 0) {
-          reject(`sclang process exited with code ${code}`);
-        } else {
-          const lines = output.split('\n');
-          const wavFilePath = lines[lines.length - 1].trim();  // The .wav file path is expected to be on the last line of the output
-          const fileId = path.parse(wavFilePath).name;
-          resolve({ wavFilePath, fileId });
-        }
-      });
-  
-      sclang.on('error', (error) => {
-        reject(`Failed to start subprocess. ${error}`);
-      });
-    });
-  }
+    const scriptPath = './term.sh'; // Replace with the actual path to your script
+
+    // Run the script
+    await execAsync(`bash ${scriptPath}`);
+
+    // Construct the path to the .wav file
+    // This will depend on how you're naming and saving the .wav files in your SuperCollider script
+    const wavFilePath = `./generated_sounds/${timestamp}.wav`; // Replace with the actual path to the .wav file
+
+    return wavFilePath;
+}
 
 function getWavFile(fileId) {
     // Construct the URL of the .wav file
