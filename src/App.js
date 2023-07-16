@@ -4,11 +4,11 @@ function App() {
     return (
         <DrumMachine
             samples={[
-                { url: "/hat-closed.wav", name: "CH" },
-                { url: "/clap.wav", name: "CL" },
-                { url: "/snare.wav", name: "SD" },
-                { url: "/kick.wav", name: "BD" },
-                { url: "/kick.wav", name: "BLAH" },
+                { url: "/hat-closed.wav", name: "HIHAT", index: 0 },
+                { url: "/clap.wav", name: "CLAP", index: 1 },
+                { url: "/snare.wav", name: "SD", index: 2 },
+                { url: "/kick.wav", name: "BD", index: 3 },
+                { url: "/kick.wav", name: "BLAH", index: 4 },
             ]}
         />
     );

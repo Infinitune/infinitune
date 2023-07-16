@@ -14,6 +14,7 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
     const stepsRef = React.useRef([[]]);
     const lampsRef = React.useRef([]);
     const seqRef = React.useRef(null);
+    const textareaRefs = React.useRef([]);
 
     const trackIds = [...Array(samples.length).keys()];
     const stepIds = [...Array(numOfSteps).keys()];
@@ -36,7 +37,33 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
     const handleVolumeChange = (e) => {
         Tone.Destination.volume.value = Tone.gainToDb(Number(e.target.value));
     };
-    const handleSampleClick = (e) => {};
+    const handleGenerateClick = async (e, index) => {
+        e.preventDefault();
+        const text = textareaRefs.current[index].value;
+        console.log(index, text);
+
+        // Define the request parameters
+        const url = "https://2a83-68-7-31-205.ngrok-free.app/sound";
+        const data = { text }; // Creates an object { text: "blah" } if textarea contains "blah"
+
+        try {
+            // Send the request
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data), // Converts { text: "blah" } to '{"text":"blah"}'
+            });
+
+            // Log the response for debugging purposes
+            const responseData = await response.json();
+            console.log(responseData);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
     React.useEffect(() => {
         tracksRef.current = samples.map((sample, i) => ({
             id: i,
@@ -72,17 +99,62 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
                 {samples.map((sample, index) => (
                     <>
                         <button
-                            id={`clickable${sample.name}`}
-                            // onClick={handleSampleClick()}
+                            id={`clickable${sample.index}`}
                             key={index}
+                            style={{
+                                backgroundColor: "#33ff66",
+                                border: "none",
+                                borderRadius: 7,
+                                color: "white",
+                                boxShadow:
+                                    "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+                                backdropFilter: "blur(6px)",
+                                borderRadius: 5,
+                                border: "1px solid rgba(255, 255, 255, 0.18)",
+                                height: "40px !important",
+                                marginBottom: "2px",
+                                minWidth: "80px",
+                                fontWeight: " bold",
+                            }}
                         >
                             {sample.name}
                         </button>
                         <Tooltip
-                            anchorSelect={`#clickable${sample.name}`}
+                            anchorSelect={`#clickable${sample.index}`}
                             clickable
                         >
-                            <textarea name="a" cols="20" rows="1"></textarea>
+                            <textarea
+                                name="a"
+                                autoFocus
+                                cols="30"
+                                rows="2"
+                                resize="none"
+                                style={{ borderRadius: "5px", resize: "none" }}
+                                ref={(elm) => {
+                                    // store reference to the textarea
+                                    textareaRefs.current[index] = elm;
+                                }}
+                            ></textarea>
+
+                            <button
+                                style={{
+                                    background:
+                                        "linear-gradient(-90deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #EE7752)",
+                                    textTransform: "uppercase",
+                                    fontWeight: "700",
+                                    border: "none",
+                                    animation: "Gradient 4s ease infinite",
+                                    textDecoration: "none",
+
+                                    color: "black",
+                                    backgroundColor: "white",
+                                    borderRadius: "5px",
+                                    fontWeight: "bold",
+                                }}
+                                onClick={(e) => handleGenerateClick(e, index)}
+                            >
+                                GENERATE
+                            </button>
                         </Tooltip>
                     </>
                 ))}
@@ -141,7 +213,7 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
             </div>
             <div className={styles.controls}>
                 <button onClick={handleStartClick} className={styles.button}>
-                    {isPlaying ? "Pause" : "Play"}
+                    {isPlaying ? " | | " : "▶"}
                 </button>
                 <label className={styles.fader}>
                     <span>BPM</span>
