@@ -4,6 +4,9 @@ import { promises as fs } from "fs";
 
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env.local'});
 
 const key = process.env.OPENAI_API_KEY;
 console.log(key);
