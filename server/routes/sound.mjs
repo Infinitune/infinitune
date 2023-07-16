@@ -153,7 +153,7 @@ const dir = '../generated_code/';
         s.stopRecording;
     
         // Print the path to the .wav file
-        "~/infinitune/server/generated_sounds/" ++ timestamp ++ ".wav".postln;
+        "~/infinitune/server/generated_sounds/" ++ "${timestamp}" ++ ".wav".postln;
     
         // Stop server
         s.quit;
