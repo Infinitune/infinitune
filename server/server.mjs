@@ -13,7 +13,12 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 5050;
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'https://infinitune.org/',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
