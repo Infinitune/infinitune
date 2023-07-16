@@ -25,6 +25,9 @@ function correctSyntax(gptOutput) {
   corrected = corrected.replace("SynthDef(gen,", "SynthDef(\\gen,");
   // substitute the string 'out.kr' to '\out.kr' (for literal '\', extra \ has been added)
   corrected = corrected.replace("Out.ar(out.kr", "Out.ar(\\out.kr");
+
+  corrected = corrected.replace("transpose.kr", "\\transpose.kr");
+    corrected = corrected.replace("amp.kr", "\\amp.kr");
     return corrected;
 }
 
