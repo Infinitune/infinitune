@@ -171,7 +171,7 @@ return scdFilePath;
 
 async function generateSound(scdFilePath) {
     return new Promise((resolve, reject) => {
-      const sclang = spawn('sclang', [scdFilePath]);
+        const sclang = spawn('sclang', ['-D', scdFilePath]);
       let output = '';
   
       sclang.stdout.on('data', (data) => {
