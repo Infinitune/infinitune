@@ -9,7 +9,6 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env.local'});
 
 const key = process.env.OPENAI_API_KEY;
-console.log(key);
 
 
 const configuration = new Configuration({
