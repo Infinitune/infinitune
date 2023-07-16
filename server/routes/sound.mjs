@@ -5,14 +5,6 @@ import { promises as fs } from "fs";
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
 
-import { fileURLToPath } from 'url';
-import { join, dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-app.use('/sounds', express.static(join(__dirname, 'generated_sounds')));
-
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
