@@ -5,6 +5,7 @@ import { promises as fs } from "fs";
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config({ path: '../.env.local'});
 
@@ -109,7 +110,7 @@ const gptOutput = gptOutputArray.data.choices[0].message.content;
 console.log(gptOutput);
 
   // Create a .scd file with the output from the GPT model
-  const scdFilePath = '../generated_code/gen.scd';
+  const scdFilePath = path.join(dir, 'gen.scd');
   const scdContent = `
     // .scd file content
     ${gptOutput}
@@ -140,9 +141,16 @@ console.log(gptOutput);
 )`;
 console.log(scdContent)
 
-  await fs.writeFile(scdFilePath, scdContent);
+const dir = path.resolve(__dirname, '../generated_code');
+try {
+  await fs.access(dir);
+} catch {
+  await fs.mkdir(dir, { recursive: true });
+}
 
-  return scdFilePath;
+await fs.writeFile(scdFilePath, scdContent);
+
+return scdFilePath;
 }
 
 async function generateSound(scdFilePath) {
