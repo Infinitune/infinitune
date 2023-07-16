@@ -11,6 +11,7 @@
     "next": "13.4.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-tooltip": "^5.18.0",
     "tone": "^14.7.77"
   },
   "devDependencies": {

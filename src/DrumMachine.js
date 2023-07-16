@@ -3,6 +3,8 @@ import * as Tone from "tone";
 
 import styles from "./DrumMachine.module.scss";
 
+import { Tooltip } from "react-tooltip";
+
 const NOTE = "C2";
 
 export default function DrumMachine({ samples, numOfSteps = 16 }) {
@@ -34,7 +36,7 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
     const handleVolumeChange = (e) => {
         Tone.Destination.volume.value = Tone.gainToDb(Number(e.target.value));
     };
-
+    const handleSampleClick = (e) => {};
     React.useEffect(() => {
         tracksRef.current = samples.map((sample, i) => ({
             id: i,
@@ -68,9 +70,24 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
         <div className={styles.machine}>
             <div className={styles.labelList}>
                 {samples.map((sample, index) => (
-                    <div key={index}>{sample.name}</div>
+                    <>
+                        <button
+                            id={`clickable${sample.name}`}
+                            // onClick={handleSampleClick()}
+                            key={index}
+                        >
+                            {sample.name}
+                        </button>
+                        <Tooltip
+                            anchorSelect={`#clickable${sample.name}`}
+                            clickable
+                        >
+                            <textarea name="a" cols="20" rows="1"></textarea>
+                        </Tooltip>
+                    </>
                 ))}
             </div>
+
             <div className={styles.grid}>
                 <div className={styles.row}>
                     {stepIds.map((stepId) => (
@@ -124,7 +141,7 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
             </div>
             <div className={styles.controls}>
                 <button onClick={handleStartClick} className={styles.button}>
-                    {isPlaying ? "Pause" : "Start"}
+                    {isPlaying ? "Pause" : "Play"}
                 </button>
                 <label className={styles.fader}>
                     <span>BPM</span>
