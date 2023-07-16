@@ -1,6 +1,7 @@
 import express from "express";
 import { exec } from "child_process";
 import { promises as fs } from "fs";
+import { spawn } from 'child_process';
 
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
@@ -154,19 +155,29 @@ return scdFilePath;
 }
 
 async function generateSound(scdFilePath) {
-  // Use the exec function to run the "sclang .scd" command
-  return new Promise((resolve, reject) => {
-    exec(`sclang ${scdFilePath}`, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
-      } else {
-        // The .wav file path is printed to stdout by the Supercollider script
-        const wavFilePath = stdout.trim();
-        const fileId = path.parse(wavFilePath).name;
+    return new Promise((resolve, reject) => {
+        const sclang = spawn('sclang', [scdFilePath]);
 
-        resolve(wavFilePath);
-        resolve(fileId);
+        
+        sclang.stdout.on('data', (data) => {
+          const wavFilePath = data.toString().trim();
+          const fileId = path.parse(wavFilePath).name;
+    
+          resolve({ wavFilePath, fileId });
+        });
+    
+        sclang.stderr.on('data', (data) => {
+          reject(`stderr: ${data}`);
+        });
+    
+        sclang.on('close', (code) => {
+          if (code !== 0) {
+            reject(`sclang process exited with code ${code}`);
       }
+    });
+
+    sclang.on('error', (error) => {
+      reject(`Failed to start subprocess. ${error}`);
     });
   });
 }
