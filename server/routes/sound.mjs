@@ -1,5 +1,4 @@
 import express from "express";
-import { exec } from "child_process";
 import { promises as fs } from "fs";
 import { spawn } from 'child_process';
 
@@ -21,12 +20,13 @@ const openai = new OpenAIApi(configuration);
 
 function correctSyntax(gptOutput) {
     let corrected = gptOutput;
-  
-    corrected = corrected.replace(/\\gen/g, '\gen');
-    corrected = corrected.replace(/\\out.kr/g, '\out.kr');
-    
+
+   // substitute the string 'gen' to '\gen' (for literal '\', extra \ has been added)
+  corrected = corrected.replace("SynthDef(gen,", "SynthDef(\\gen,");
+  // substitute the string 'out.kr' to '\out.kr' (for literal '\', extra \ has been added)
+  corrected = corrected.replace("Out.ar(out.kr", "Out.ar(\\out.kr");
     return corrected;
-  }
+}
 
 async function sendToGpt(text) {
   // Call the OpenAI API here with the text and get the output
