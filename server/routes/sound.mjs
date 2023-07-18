@@ -113,7 +113,7 @@ const dir = '../generated_code/';
     try {
       await fs.access(dir);
     } catch {
-      await fs.mkdir(dir, { recursive: true });
+      fs.mkdir(dir, { recursive: true });
     }
     
     await fs.writeFile(scdFilePath, scdContent);
