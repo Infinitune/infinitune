@@ -7,7 +7,7 @@ import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: '../.env.local', overwrite: true});
+dotenv.config({ path: './.env.local', overwrite: true});
 console.log(fs.readFileSync('./.env.local', 'utf8'));
 //console.log(process.env);
 
