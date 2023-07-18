@@ -146,6 +146,7 @@ async function retrieveFile(codeURL){
 
 router.post("/drums", async (req, res) => {
   let textPrompt = req.body.text;
+  console.log(textPrompt)
   let fileID = await sendToGpt(textPrompt);
   res.send(fileID).status(201);
 });
