@@ -113,7 +113,7 @@ const dir = '../generated_code/';
     try {
       await fs.access(dir);
     } catch {
-      fs.mkdir(dir, { recursive: true });
+      await fs.mkdir(dir, { recursive: true });
     }
     
     await fs.writeFile(scdFilePath, scdContent);
@@ -149,7 +149,7 @@ async function retrieveFile(codeURL){
 router.post("/drums", async (req, res) => {
   let textPrompt = req.body.text;
   console.log(textPrompt)
-  let fileID = sendToGpt(textPrompt);
+  let fileID = await sendToGpt(textPrompt);
   res.send(fileID).status(201);
 });
 
