@@ -23,7 +23,7 @@ app.use(express.json());
 
 
 // Serve static files from the "generated_sounds" directory
-app.use('/sounds', express.static(join(__dirname, 'generated_sounds')));
+app.use('/code', express.static(join(__dirname, 'generated_code')));
 
 app.use("/sound", sounds);
 

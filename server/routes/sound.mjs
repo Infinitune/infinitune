@@ -1,22 +1,16 @@
 import express from "express";
 import { promises as fs } from "fs";
-import { spawn } from 'child_process';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import fs from 'fs';
 
 
 const router = express.Router();
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
 import path from 'path';
-const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
-
-const execAsync = promisify(exec);
 
 dotenv.config({ path: '../.env.local'});
 
 const key = process.env.OPENAI_API_KEY;
-
 
 const configuration = new Configuration({
   apiKey: key,
@@ -24,20 +18,8 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-function correctSyntax(gptOutput) {
-    let corrected = gptOutput;
-
-   // substitute the string 'gen' to '\gen' (for literal '\', extra \ has been added)
-  corrected = corrected.replace("SynthDef(gen,", "SynthDef(\\gen,");
-  // substitute the string 'out.kr' to '\out.kr' (for literal '\', extra \ has been added)
-  corrected = corrected.replace("Out.ar(out.kr", "Out.ar(\\out.kr");
-
-  corrected = corrected.replace("transpose.kr", "\\transpose.kr");
-    corrected = corrected.replace("amp.kr", "\\amp.kr");
-    return corrected;
-}
-
 async function sendToGpt(text) {
+  let timestamp = new Date().toISOString().replace(/[:.-]/g, '');
   // Call the OpenAI API here with the text and get the output
   // This part will depend on how you're interfacing with the OpenAI API
   // For now, let's say that the output is stored in a variable called `gptOutput`
@@ -121,86 +103,60 @@ console.log(gptOutput);
 const dir = '../generated_code/';
 
   // Create a .scd file with the output from the GPT model
-  const scdFilePath = path.join(dir, 'gen.scd');
+  const scdFilePath = path.join(dir, `${timestamp}.js`);
   const scdContent = `
-    // .scd file content
+  document.getElementById('start').addEventListener('click', () => {
     ${gptOutput}
-    (
-    s.waitForBoot {
+  });
+    `;
+    try {
+      await fs.access(dir);
+    } catch {
+      await fs.mkdir(dir, { recursive: true });
+    }
     
-        // Get a timestamp
-    
-        // Start recording to a file
-        s.record(path: "~/infinitune/server/generated_sounds/" ++ "${timestamp}" ++ ".wav");
-    
-        // Play the simple sine wave
-        Synth(\\gen);
-    
-        // Wait for 3 seconds
-        3.wait;
-    
-        // Stop recording
-        s.stopRecording;
-    
-        // Print the path to the .wav file
-        "~/infinitune/server/generated_sounds/" ++ "${timestamp}" ++ ".wav".postln;
-    
-        // Stop server
-        s.quit;
-    };
-)`;
+    await fs.writeFile(scdFilePath, scdContent);
+    return timestamp;
 //console.log(scdContent)
-
-try {
-  await fs.access(dir);
-} catch {
-  await fs.mkdir(dir, { recursive: true });
 }
 
-await fs.writeFile(scdFilePath, scdContent);
-
-return scdFilePath;
-}
-
-
-/*async function generateSound(scdFilePath) {
-    const scriptPath = './term.sh'; // Replace with the actual path to your script
-
-    // Run the script
-    await execAsync(`bash ${scriptPath}`);
-
-    // Construct the path to the .wav file
-    // This will depend on how you're naming and saving the .wav files in your SuperCollider script
-    const wavFilePath = `./generated_sounds/${timestamp}.wav`; // Replace with the actual path to the .wav file
-
-    return wavFilePath;
-}*/
-
-function getWavFile(fileId) {
+async function attachURL(fileId) {
     // Construct the URL of the .wav file
-    const wavFileUrl = `https://2a83-68-7-31-205.ngrok-free.app/sounds/${fileId}.wav`;
+    const FileUrl = `https://be65-209-242-129-162.ngrok-free.app/code/${fileId}.js`;
   
     // Return the URL
-    return wavFileUrl;
+    return FileUrl;
   }
 
+async function retrieveFile(codeURL){
+  if (!codeURL) res.status(404).send("File not found");
+  else{
+        // Assuming jsFilePath is the path to your .js file
+    fs.readFile(codeURL, 'utf8', (err, jsFile) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("An error occurred while reading the file.");
+      return;
+    }
+    else{
+      return jsFile;
+    }
+  });
+  }
+}
 
-router.post("/", async (req, res) => {
+router.post("/drums", async (req, res) => {
   let textPrompt = req.body.text;
-  let scCode = await sendToGpt(textPrompt);
-  let fileId = await generateSound(scCode);
-  console.log(fileId)
-  res.send({fileId: fileId}).status(201);
+  let fileID = await sendToGpt(textPrompt);
+  res.send(fileID).status(201);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/drums/:id", async (req, res) => { //needs work
   let fileId = req.params.id;
-  let wavFile = await getWavFile(fileId);
-  if (!wavFile) res.status(404).send("File not found");
-  else {
-    res.setHeader('Content-Type', 'audio/wav');
-    res.send(wavFile);
-  }
+  let codeURL = await attachURL(fileId);
+  let jsFile = await retrieveFile(codeURL);
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send(jsFile).status(200);
 });
 
 export default router;

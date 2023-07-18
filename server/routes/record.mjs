@@ -1,3 +1,9 @@
+/*
+
+
+NOT USED YET, maybe implemented if database stuff is needed?
+
+
 import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
@@ -61,3 +67,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 export default router;
+
+
+*/
