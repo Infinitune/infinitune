@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: '../.env.local', overwrite: true});
-console.log(fs.readFileSync('../.env.local', 'utf8'));
+console.log(fs.readFileSync('./.env.local', 'utf8'));
 console.log(process.env);
 
 const key = process.env.OPENAI_API_KEY;
@@ -162,3 +162,6 @@ router.get("/drums/:id", async (req, res) => { //needs work
 });
 
 export default router;
+
+
+//071823: current issue is that the openai api key isn't getting loaded, drilled down more and the .env.local file is not being read.
