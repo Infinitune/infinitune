@@ -101,8 +101,7 @@ temperature: 0
 //const gptOutput = correctSyntax(gptOutputArray.data.choices[0].message.content); (not needed yet)
 const gptOutput = gptOutputArray.data.choices[0].message.content;
 
-console.log(gptOutput);
-const dir = '../generated_code/';
+const dir = 'generated_code/';
 
   // Create a .scd file with the output from the GPT model
   const scdFilePath = path.join(dir, `${timestamp}.js`);
