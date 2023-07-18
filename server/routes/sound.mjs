@@ -1,5 +1,6 @@
 import express from "express";
-import fs from 'fs/promises';
+import fsp from 'fs/promises';
+import fs from 'fs';
 
 
 const router = express.Router();
@@ -111,12 +112,12 @@ const dir = '../generated_code/';
   });
     `;
     try {
-      await fs.access(dir);
+      await fsp.access(dir);
     } catch {
-      await fs.mkdir(dir, { recursive: true });
+      await fsp.mkdir(dir, { recursive: true });
     }
     
-    await fs.writeFile(scdFilePath, scdContent);
+    await fsp.writeFile(scdFilePath, scdContent);
     return timestamp;
 //console.log(scdContent)
 }
