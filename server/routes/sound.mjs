@@ -8,9 +8,6 @@ import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
 import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 dotenv.config({ path: './.env.local', overwrite: true});
 console.log(fs.readFileSync('./.env.local', 'utf8'));
 //console.log(process.env);
@@ -104,7 +101,7 @@ temperature: 0
 //const gptOutput = correctSyntax(gptOutputArray.data.choices[0].message.content); (not needed yet)
 const gptOutput = gptOutputArray.data.choices[0].message.content;
 
-const dir = path.join(__dirname, 'generated_code');
+const dir = "./generated_code"
 
   // Create a .scd file with the output from the GPT model
   const scdFilePath = path.join(dir, `${timestamp}.js`);
