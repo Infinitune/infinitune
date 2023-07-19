@@ -8,6 +8,9 @@ import { Configuration, OpenAIApi } from "openai";
 import dotenv from 'dotenv';
 import path from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 dotenv.config({ path: './.env.local', overwrite: true});
 console.log(fs.readFileSync('./.env.local', 'utf8'));
 //console.log(process.env);
