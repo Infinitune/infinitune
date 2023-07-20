@@ -52,6 +52,11 @@
 
 Our team is a diverse group with a shared passion for technology and music. The concept for Infinitune was born out of a desire to bridge the gap between music, coding & generative AI. Our vision was to create a tool that would allow users to generate unique music samples using simple text inputs, thus opening up a new world of possibilities for creativity and expression.
 
+## Updates
+
+USING TONE.JS INSTEAD OF SUPERCOLLIDER: 
+Currently, the backend API can receive POST and GET, a POST containing a prompt and a instrument type is extracted and sent to GPT-4, which generates Tone.js code for that sound. This is saved, and the ID is passed back as the response for the POST. A GET with this ID returns a blob containing the javascript code. The frontend is not connected to this backend yet (07/19/23).
+
 ## What it does
 
 Infinitune is an innovative tool that brings a unique text-to-code-to-audio approach to music sample generation. Users enter a textual description, and Infinitune translates this into executable SuperCollider code, which in turn synthesizes into the desired music sample. This could be anything from drum beats to basslines to melodies.
