@@ -129,23 +129,6 @@ async function attachURL(fileId) {
     return FileUrl;
   }
 
-async function retrieveFile(codeURL){
-  if (!codeURL) res.status(404).send("File not found");
-  else{
-        // Assuming jsFilePath is the path to your .js file
-    fs.readFile(codeURL, 'utf8', (err, jsFile) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("An error occurred while reading the file.");
-      return;
-    }
-    else{
-      return jsFile;
-    }
-  });
-  }
-}
-
 router.post("/drums", async (req, res) => {
   let textPrompt = req.body.text;
   console.log(textPrompt)
@@ -155,13 +138,20 @@ router.post("/drums", async (req, res) => {
 
 router.get("/drums/:id", async (req, res) => { //needs work
   let fileId = req.params.id;
-  let codeURL = await attachURL(fileId);
-  let jsFile = await retrieveFile(codeURL);
-  res.setHeader('Content-Type', 'application/javascript');
-  res.send(jsFile).status(200);
+  let jsFilePath = await attachURL(fileId);
+  fs.readFile(jsFilePath, 'utf8', (err, jsFile) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("An error occurred while reading the file.");
+      return;
+    }
+  
+    res.setHeader('Content-Type', 'application/javascript');
+    res.send(jsFile);
+  });
 });
 
 export default router;
 
 
-//071823: current issue is that the openai api key isn't getting loaded, drilled down more and the .env.local file is not being read.
+//071923: how do we GET the generated code file
