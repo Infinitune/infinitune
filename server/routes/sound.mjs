@@ -218,8 +218,8 @@ function getFilePath(fileId) {
 router.post("/", async (req, res) => {
   let textPrompt = req.body.text;
   let genType = req.body.genType;
-  console.log(textPrompt)
-  let fileID = await sendToGpt(textPrompt);
+  console.log(textPrompt, genType)
+  let fileID = await sendToGpt(textPrompt, genType);
   res.send(fileID).status(201);
 });
 
