@@ -122,13 +122,13 @@ const dir = "./generated_code"
 //console.log(scdContent)
 }
 
-async function attachURL(fileId) {
-    // Construct the URL of the .wav file
-    const FileUrl = `https://be65-209-242-129-162.ngrok-free.app/code/${fileId}.js`;
-  
-    // Return the URL
-    return FileUrl;
-  }
+async function getFilePath(fileId) {
+  // Construct the path of the .js file
+  const filePath = path.join(__dirname, '..', '..', 'generated_code', `${fileId}.js`);
+
+  // Return the path
+  return filePath;
+}
 
 router.post("/drums", async (req, res) => {
   let textPrompt = req.body.text;
@@ -139,7 +139,7 @@ router.post("/drums", async (req, res) => {
 
 router.get("/drums/:id", async (req, res) => { //needs work
   let fileId = req.params.id;
-  let jsFilePath = await attachURL(fileId);
+  let jsFilePath = await getFilePath(fileId);
   fs.readFile(jsFilePath, 'utf8', (err, jsFile) => {
     if (err) {
       console.error(err);
