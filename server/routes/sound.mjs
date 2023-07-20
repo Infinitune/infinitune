@@ -1,6 +1,8 @@
 import express from "express";
 import fsp from 'fs/promises';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { join, dirname } from 'path';
 
 
 const router = express.Router();
@@ -122,9 +124,18 @@ const dir = "./generated_code"
 //console.log(scdContent)
 }
 
-async function getFilePath(fileId) {
+function getFilePath(fileId) {
+  // Get the URL of the current module
+  const currentModuleUrl = import.meta.url;
+
+  // Convert the URL to a file path
+  const currentModulePath = fileURLToPath(currentModuleUrl);
+
+  // Get the directory of the current module
+  const currentDir = dirname(currentModulePath);
+
   // Construct the path of the .js file
-  const filePath = path.join(__dirname, '..', '..', 'generated_code', `${fileId}.js`);
+  const filePath = join(currentDir, '..', '..', 'generated_code', `${fileId}.js`);
 
   // Return the path
   return filePath;
