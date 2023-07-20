@@ -11,7 +11,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: './.env.local', overwrite: true});
-console.log(fs.readFileSync('./.env.local', 'utf8'));
 //console.log(process.env);
 
 const key = process.env.OPENAI_API_KEY;
