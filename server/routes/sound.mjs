@@ -208,7 +208,7 @@ function getFilePath(fileId) {
   const currentDir = dirname(currentModulePath);
 
   // Construct the path of the .js file
-  const filePath = join(currentDir, '..', '..', 'generated_code', `${fileId}.js`);
+  const filePath = join(currentDir, '..', 'generated_code', `${fileId}.js`);
 
   // Return the path
   return filePath;
