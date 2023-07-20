@@ -23,7 +23,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 async function sendToGpt(text) {
-  console.log(text);
   let timestamp = new Date().toISOString().replace(/[:.-]/g, '');
   // Call the OpenAI API here with the text and get the output
   // This part will depend on how you're interfacing with the OpenAI API
@@ -166,4 +165,4 @@ router.get("/drums/:id", async (req, res) => { //needs work
 export default router;
 
 
-//071923: how do we GET the generated code file
+//071923: NVM BABY IT WORKS LEGGOOOOO
