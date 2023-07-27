@@ -96,7 +96,7 @@ for (var i = 0; i < 3; i++) {
 `},
 {"role":"user", "content":text}
 ],
-temperature: 0.5
+temperature: 0.8
 });
   }
   else if (genType == "melodic") {
