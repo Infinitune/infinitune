@@ -219,9 +219,21 @@ router.post("/", async (req, res) => {
   let genType = req.body.genType;
   console.log(textPrompt, genType)
   let fileID = await sendToGpt(textPrompt, genType);
-  res.send(fileID).status(201);
+  let jsFilePath = await getFilePath(fileID);
+  fs.readFile(jsFilePath, 'utf8', (err, jsFile) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("An error occurred while reading the file.");
+      return;
+    }
+    res.setHeader('Content-Type', 'application/javascript');
+    res.send(jsFile);
+  });
 });
 
+
+//Old function, for split get / post
+/*
 router.get("/:id", async (req, res) => { //needs work
   let fileId = req.params.id;
   let jsFilePath = await getFilePath(fileId);
@@ -236,6 +248,9 @@ router.get("/:id", async (req, res) => { //needs work
     res.send(jsFile);
   });
 });
+
+*/
+
 
 export default router;
 
