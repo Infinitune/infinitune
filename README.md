@@ -42,6 +42,40 @@
   </ol>
 </details>
 
+<!-- GETTING STARTED -->
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+
+-   npm
+    ```sh
+    npm install npm@latest -g
+    ```
+
+### Installation
+
+1. Clone the repo
+    ```sh
+    git clone https://github.com/infinitune/infinitune.git
+    ```
+2. Install NPM packages
+
+    ```sh
+    npm install
+    ```
+
+3. Run
+    ```sh
+    npm run dev
+    ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
@@ -76,40 +110,6 @@ Our journey in creating Infinitune has been a whirlwind of learning and growth. 
 ## What's next for Infinitune
 
 The potential of Infinitune extends far beyond the realm of sample or music production. With its ability to convert textual descriptions into unique audio samples, Infinitune has a vast array of applications across multiple industries. From enhancing live streams with on-the-fly event/alert sounds to scoring scenes for movies, from generating dynamic sound effects for video games to customizing audio for podcasts, content creation, and comedy routines, the possibilities are endless. Furthermore, it can be used for audio branding, allowing businesses to create custom jingles that align with their brand identity. It can even contribute to immersive user experiences in AR/VR applications, art installations, and exhibitions. As we advance, we aim to continue refining and expanding Infinitune's capabilities to tap into these exciting opportunities.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-
--   npm
-    ```sh
-    npm install npm@latest -g
-    ```
-
-### Installation
-
-1. Clone the repo
-    ```sh
-    git clone https://github.com/infinitune/infinitune.git
-    ```
-2. Install NPM packages
-
-    ```sh
-    npm install
-    ```
-
-3. Run
-    ```sh
-    npm run dev
-    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
