@@ -54,7 +54,7 @@ Our team is a diverse group with a shared passion for technology and music. The 
 
 ## Updates
 
-USING TONE.JS INSTEAD OF SUPERCOLLIDER: 
+USING TONE.JS INSTEAD OF SUPERCOLLIDER:
 Currently, the backend API can receive POST and GET, a POST containing a prompt and a instrument type is extracted and sent to GPT-4, which generates Tone.js code for that sound. This is saved, and the ID is passed back as the response for the POST. A GET with this ID returns a blob containing the javascript code. The frontend is not connected to this backend yet (07/19/23).
 
 ## What it does
@@ -206,3 +206,5 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+[product-screenshot]: https://i.imgur.com/lkUPln0.png
