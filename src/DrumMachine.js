@@ -81,7 +81,7 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
         const fileId = "sine_20230716114832"; // replace with the actual fileId
         const soundUrl = `${baseUrl}sounds/${fileId}.wav`;
 
-        // Fetch the .wav file
+        // Fetch the tone.js sound code
         fetch(soundUrl)
             .then((response) => response.blob())
             .then((blob) => {
@@ -98,19 +98,58 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
     };
 
     React.useEffect(() => {
-        tracksRef.current = samples.map((sample, i) => ({
-            id: i,
-            sampler: new Tone.Sampler({
-                urls: {
-                    [NOTE]: sample.url,
-                },
-            }).toDestination(),
-        }));
+        tracksRef.current = samples.map((sample, i) => {
+            console.log(`Creating track ${i}`);
+            return {
+                id: i,
+                synths: sample.synths.map((synth) => {
+                    console.log(`Creating synth with type ${synth.type}`);
+                    const SynthConstructor = Tone[synth.type];
+                    const instance = new SynthConstructor(synth.config);
+                    instance.volume.value = 0; // set volume to 0 dB
+                    if (synth.pan && instance.pan)
+                        instance.pan.value = synth.pan;
+                    instance.toDestination();
+                    return {
+                        instance: instance,
+                        note: synth.note,
+                        duration: synth.duration,
+                    };
+                }),
+            };
+        });
+
         seqRef.current = new Tone.Sequence(
             (time, step) => {
                 tracksRef.current.map((trk) => {
                     if (stepsRef.current[trk.id]?.[step]?.checked) {
-                        trk.sampler.triggerAttack(NOTE, time);
+                        console.log(
+                            "Triggering track",
+                            trk.id,
+                            "at step",
+                            step
+                        );
+                        trk.synths.forEach((synth, synthIndex) => {
+                            console.log(
+                                "Triggering synth",
+                                synthIndex,
+                                "of track",
+                                trk.id,
+                                "at step",
+                                step,
+                                "with config",
+                                synth
+                            );
+                            try {
+                                synth.instance.triggerAttackRelease(
+                                    synth.note || "C4", // use a default note when synth.note is null
+                                    synth.duration,
+                                    time
+                                );
+                            } catch (e) {
+                                console.error("Failed to trigger synth", e);
+                            }
+                        });
                     }
                     lampsRef.current[step].checked = true;
                 });
@@ -122,7 +161,9 @@ export default function DrumMachine({ samples, numOfSteps = 16 }) {
 
         return () => {
             seqRef.current?.dispose();
-            tracksRef.current.map((trk) => trk.sampler.dispose());
+            tracksRef.current.forEach((trk) =>
+                trk.synths.forEach((synth) => synth.instance.dispose())
+            );
         };
     }, [samples, numOfSteps]);
 
